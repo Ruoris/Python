@@ -12,8 +12,8 @@ daterows={'2011':[0,12],'2012':[12,24],'2013':[24,36],'2014':[36,48],'2015':[48,
 #pd.read_csv('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',sep=";",header=0)
 sunMinValue=float(35)
 sunMaxValue=float(299.4)
-def SetMultiplePlots(df,df2,df3,df4,df5,df6):
-    fig,(ax1, ax2,ax3,ax4,ax5,ax6) = plt.subplots(6, 1)
+def SetMultiplePlots(df,df2,df3,df4,df5,df6,df7):
+    fig,(ax1, ax2,ax3,ax4,ax5,ax6,ax7) = plt.subplots(7, 1)
     ax1.plot(df.iloc[:,0],df.iloc[:,1])
 
     # Major ticks every 6 months.
@@ -162,14 +162,43 @@ def SetMultiplePlots(df,df2,df3,df4,df5,df6):
     ax6.format_xdata = mdates.DateFormatter('%Y-%m')
     ax6.format_ydata = lambda x: f'${x:.2f}'  # Format the price.
     ax6.grid(True)
+
+
+    ax7.plot(df7.iloc[:,0],df7.iloc[:,1])
+
+    # Major ticks every 6 months.
+    fmt_half_year = mdates.MonthLocator(interval=1)
+    ax7.xaxis.set_major_locator(fmt_half_year)
+
+    # Minor ticks every month.
+    fmt_month = mdates.MonthLocator()   
+    ax7.xaxis.set_minor_locator(fmt_month)
+    
+    
+    # Text in the x axis will be displayed in 'YYYY-mm' format.
+    ax7.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+    
+    # Round to nearest years.
+    # datemin = np.datetime64(months[0], 'Y')
+    # datemax = np.datetime64(months[-1], 'Y') + np.timedelta64(1, 'Y')
+    # ax.set_xlim(datemin, datemax)
+    
+    # Format the coords message box, i.e. the numbers displayed as the cursor moves
+    # across the axes within the interactive GUI.
+    ax7.format_xdata = mdates.DateFormatter('%Y-%m')
+    ax7.format_ydata = lambda x: f'${x:.2f}'  # Format the price.
+    ax7.grid(True)
+
+
     # Rotates and right aligns the x labels, and moves the bottom of the
     # axes up to make room for them.
     ax1.set_ylabel('Mean')
     ax2.set_ylabel('Max')
     ax3.set_ylabel('Min')
     ax4.set_ylabel('Sun')
-    ax5.set_ylabel('Depression')
-    ax6.set_ylabel('Exercise')
+    ax5.set_ylabel('Rain')
+    ax6.set_ylabel('Depression')
+    ax7.set_ylabel('Exercise')
     fig.autofmt_xdate()
 def Setplot(df):
     fig, ax = plt.subplots()
@@ -274,8 +303,9 @@ def GetWeather(filepath,yearstart,yearend):
         for y in range(1,13):
            # u=df_u_INT.iloc[x,y]
             u=sun_scope.iloc[x,y]
-            d=u
-           # print(d)
+            d=float(u)
+            print("Float d")
+            print(type(d))
             
             normalized.append(d)
         allSunValuesInArray.append(normalized)
@@ -325,7 +355,7 @@ def GetWeather(filepath,yearstart,yearend):
     print(filepath)
     print('weather values before INT')
     print(dssunvalues)
-    ds_INT_Values=rank_INT(dssunvalues,stochastic=True)
+    ds_INT_Values=rank_INT(dssunvalues,stochastic=False)
     print('weather values after INT')
     print(ds_INT_Values)
     print('is average 0?')
@@ -388,11 +418,12 @@ yearend=2018
 # plt.legend() 
 # plt.show()
 
-fig, (ax1, ax2,ax3,ax4,ax5,ax6) = plt.subplots(6, 1,sharex=True, sharey=True)
+fig, (ax1, ax2,ax3,ax4,ax5,ax6,ax7) = plt.subplots(7, 1,sharex=True, sharey=True)
 sunarray=SunEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',2011,2011)
 meanarray=MeanEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Mean/England_MEAN.csv',2011,2011)
 maxarray=MaxEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MaxTemp/EnglandMax.csv',2011,2011)
 minarray=MinEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MinTemp/England_MIN.csv',2011,2011)
+rainarray=RainEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Rain/England_RAIN.csv',2011,2011)
 deparray=DepEngMonth=GetTrends('BY MONTH/Depression/Depression monthlyGB-Eng.csv',daterows[str(2011)][0],daterows[str(2011)][1])
 exearray=ExeEngMonth=GetTrends('BY MONTH/Exercise/Exercise monthlyGB-Eng.csv',daterows[str(2011)][0],daterows[str(2011)][1])
 
@@ -403,7 +434,7 @@ for x in range(2012,2021):
     #Setplot(MeanEngMonthly)
 #ax1.plot(meanarray.iloc[:,0],meanarray.iloc[:,1] )
 #ax1.plot(MeanEngMonthly.iloc[:,0],MeanEngMonthly.iloc[:,1] )
-ax1.set_ylabel('Mean')
+
 #Setplot(meanarray)
 for x in range(2012,2021):
     MaxEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MaxTemp/EnglandMax.csv',x,x)
@@ -411,7 +442,7 @@ for x in range(2012,2021):
     #Setplot(MeanEngMonthly)
 #ax2.plot(maxarray.iloc[:,0],maxarray.iloc[:,1] )
 #Setplot(maxarray)
-ax2.set_ylabel('Max')
+
 
 for x in range(2012,2021):
     MinEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MinTemp/England_MIN.csv',x,x)
@@ -419,44 +450,52 @@ for x in range(2012,2021):
     #Setplot(MeanEngMonthly)
 #ax3.plot(minarray.iloc[:,0],minarray.iloc[:,1] )
 #ax2.plot(MinEngMonthly.iloc[:,0],MinEngMonthly.iloc[:,1] )
-ax3.set_ylabel('Min')
+
 
 for x in range(2012,2021):
     SunEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',x,x)
     sunarray=sunarray.append(SunEngMonthly,ignore_index=True)
 #ax4.plot(sunarray.iloc[:,0],sunarray.iloc[:,1])
 #ax3.plot(SunEngMonthly.iloc[:,0],SunEngMonthly.iloc[:,1])
-ax4.set_ylabel('Sun')
+
+for x in range(2012,2021):
+    RainEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Rain/England_RAIN.csv',x,x)
+    rainarray=rainarray.append(RainEngMonthly,ignore_index=True)
+#ax4.plot(sunarray.iloc[:,0],sunarray.iloc[:,1])
+#ax3.plot(SunEngMonthly.iloc[:,0],SunEngMonthly.iloc[:,1])
+
 for x in range(2012,2021):
    DepEngMonth=GetTrends('BY MONTH/Depression/Depression monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
    deparray=deparray.append(DepEngMonth,ignore_index=True) 
 #ax5.plot(deparray.iloc[:,0],deparray.iloc[:,1])
 #ax4.plot(DepEngMonth.iloc[:,0],DepEngMonth.iloc[:,1])
-ax5.set_ylabel('Depression')
+
 
 for x in range(2012,2021):
    ExeEngMonth=GetTrends('BY MONTH/Exercise/Exercise monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
    exearray=exearray.append(ExeEngMonth,ignore_index=True) 
 #ax6.plot(exearray.iloc[:,0],exearray.iloc[:,1])
 #ax5.plot(ExeEngMonth.iloc[:,0],ExeEngMonth.iloc[:,1])
-ax6.set_ylabel('Exercise')
+
 
 
 ax1.plot(meanarray.iloc[:,0],meanarray.iloc[:,1] )
 ax2.plot(maxarray.iloc[:,0],maxarray.iloc[:,1] )
 ax3.plot(minarray.iloc[:,0],minarray.iloc[:,1] )
 ax4.plot(sunarray.iloc[:,0],sunarray.iloc[:,1])
-ax5.plot(deparray.iloc[:,0],deparray.iloc[:,1])
-ax6.plot(exearray.iloc[:,0],exearray.iloc[:,1])
-
+ax5.plot(rainarray.iloc[:,0],rainarray.iloc[:,1])
+ax6.plot(deparray.iloc[:,0],deparray.iloc[:,1])
+ax7.plot(exearray.iloc[:,0],exearray.iloc[:,1])
+Setplot(meanarray)
 
 ax1.set_ylabel('Mean')
 ax2.set_ylabel('Max')
 ax3.set_ylabel('Min')
 ax4.set_ylabel('Sun')
-ax5.set_ylabel('Depression')
-ax6.set_ylabel('Exercise')
-SetMultiplePlots(meanarray,maxarray,minarray,sunarray,deparray,exearray)
+ax5.set_ylabel('Rain')
+ax6.set_ylabel('Depression')
+ax7.set_ylabel('Exercise')
+SetMultiplePlots(meanarray,maxarray,minarray,sunarray,rainarray,deparray,exearray)
 # plt.legend() 
 plt.show()
 
