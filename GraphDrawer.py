@@ -7,7 +7,8 @@ from pandas.core.frame import DataFrame
 #
 #Hakutaulu ja koheesio
 #
-daterows={'2011':[0,12],'2012':[12,24],'2013':[24,36],'2014':[36,48],'2015':[48,60],'2016':[60,72],'2017':[72,84],'2018':[84,96],'2019':[96,108],'2020':[108,120]}
+#daterows={'2011':[0,12],'2012':[12,24],'2013':[24,36],'2014':[36,48],'2015':[48,60],'2016':[60,72],'2017':[72,84],'2018':[84,96],'2019':[96,108],'2020':[108,120]}
+daterows={'2006':[0,12],'2007':[12,24],'2008':[24,36],'2009':[36,48],'2010':[48,60],'2011':[60,72],'2012':[72,84],'2013':[84,96],'2014':[96,108],'2015':[108,120],'2016':[120,132],'2017':[132,144],'2018':[144,156],'2019':[156,168],'2020':[168,180]}
 #values from england 2011-2020
 #pd.read_csv('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',sep=";",header=0)
 sunMinValue=float(35)
@@ -238,14 +239,19 @@ def GetTrends(filepath,yearstart,yearend):
 
     months=depression.iloc[yearstart:yearend,0]
     _Val=depression.iloc[yearstart:yearend,1]
-    int_VALS=rank_INT(_Val,stochastic=True)
+    
+    print('yksikkötarkistus' +filepath)
+    print("Vuosi")
+    print(yearstart)
+    print(_Val)
+    int_VALS=rank_INT(_Val,stochastic=False)
     _Val=int_VALS
-    print('int_VALS')
-    print(int_VALS)
+   # print('int_VALS')
+    #print(int_VALS)
     #maximumvalue=max(_Val)
     #maximumvalue=max(depression.iloc[0:109,1])
-    print('_Vals')
-    print(_Val)
+    #print('_Vals')
+    #print(_Val)
     #min_value=min(_Val)
     #min_value=min(depression.iloc[0:109,1])
     #print("min_value")
@@ -256,9 +262,9 @@ def GetTrends(filepath,yearstart,yearend):
         summa+x
         normalized_values.append(x)
     
-    print('filename of normalized values')
-    print(filepath)
-    print(summa/12.0)
+    #print('filename of normalized values')
+    #print(filepath)
+    #print(summa/12.0)
     #print("normalized values:")
     #print(normalized_values)
     dsmonths=pd.Series(months)
@@ -277,16 +283,16 @@ def GetWeather(filepath,yearstart,yearend):
     weather=pd.read_csv(filepath,sep=";",header=0)
     #sunvalues=pd.read_csv('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',sep=";",header=0)
     #print(sunvalues)
-    c=2011-yearstart
+    c=2006-yearstart
     if c<0:
         c=c*(-1)
-    ye=2011-yearend
+    ye=2006-yearend
     if ye<0:
         ye=ye*(-1)
     # print('c: ')
     # print(c)
-    for_length=weather.iloc[94:104,0]
-    sun_scope=weather.iloc[94:104,:13]
+    for_length=weather.iloc[89:104,0]
+    sun_scope=weather.iloc[89:104,:13]
     sun_dated=[]
     
     # print(sun_scope.iloc[c,:13])
@@ -296,16 +302,16 @@ def GetWeather(filepath,yearstart,yearend):
     #print(allSunValues)
     u=sun_scope.iloc[c,:13]
     
-    print('u')
-    print(u) 
-    for x in range(0,10):
+    #print('u')
+    #print(u) 
+    for x in range(0,15):
         normalized=[]
         for y in range(1,13):
            # u=df_u_INT.iloc[x,y]
             u=sun_scope.iloc[x,y]
             d=float(u)
-            print("Float d")
-            print(type(d))
+            #print("Float d")
+            #print(type(d))
             
             normalized.append(d)
         allSunValuesInArray.append(normalized)
@@ -351,29 +357,29 @@ def GetWeather(filepath,yearstart,yearend):
     #print(datetimed_months.dtypes)
     df_all=pd.DataFrame(datetimed_months)       
     dssunvalues=pd.Series(sun_to_series)
-    print('filename of normalized values')
-    print(filepath)
-    print('weather values before INT')
-    print(dssunvalues)
+    #print('filename of normalized values')
+    #print(filepath)
+    #print('weather values before INT')
+    #print(dssunvalues)
     ds_INT_Values=rank_INT(dssunvalues,stochastic=False)
-    print('weather values after INT')
-    print(ds_INT_Values)
-    print('is average 0?')
+    # print('weather values after INT')
+    # print(ds_INT_Values)
+    # print('is average 0?')
     summarum=0.0
     for x in ds_INT_Values:
         summarum+x
 
     if summarum!=0.0:
         print('NO')
-        print(summarum)
+        # print(summarum)
     else:
         print('YES')
-        print(summarum)
+        # print(summarum)
     df_all['Sun']=ds_INT_Values
     return df_all
 #months=[]
-year=2018
-yearend=2018
+year=2006
+yearend=2020
 # 
 
 
@@ -418,64 +424,49 @@ yearend=2018
 # plt.legend() 
 # plt.show()
 
-fig, (ax1, ax2,ax3,ax4,ax5,ax6,ax7) = plt.subplots(7, 1,sharex=True, sharey=True)
-sunarray=SunEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',2011,2011)
-meanarray=MeanEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Mean/England_MEAN.csv',2011,2011)
-maxarray=MaxEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MaxTemp/EnglandMax.csv',2011,2011)
-minarray=MinEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MinTemp/England_MIN.csv',2011,2011)
-rainarray=RainEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Rain/England_RAIN.csv',2011,2011)
-deparray=DepEngMonth=GetTrends('BY MONTH/Depression/Depression monthlyGB-Eng.csv',daterows[str(2011)][0],daterows[str(2011)][1])
-exearray=ExeEngMonth=GetTrends('BY MONTH/Exercise/Exercise monthlyGB-Eng.csv',daterows[str(2011)][0],daterows[str(2011)][1])
+fig, (ax1, ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9) = plt.subplots(9, 1,sharex=True, sharey=True)
+sunarray=SunEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',2006,2006)
+meanarray=MeanEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Mean/England_MEAN.csv',2006,2006)
+maxarray=MaxEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MaxTemp/EnglandMax.csv',2006,2006)
+minarray=MinEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MinTemp/England_MIN.csv',2006,2006)
+rainarray=RainEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Rain/England_RAIN.csv',2006,2006)
+deparray=DepEngMonth=GetTrends('BY MONTH/Depression_2006/Depression monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
+exearray=ExeEngMonth=GetTrends('BY MONTH/Exercise_2006/Exercise monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
+happyarray=HappyEngMonth=GetTrends('BY MONTH/Happy/Happy monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
+happinessarray=HappinessEngMonth=GetTrends('BY MONTH/Happiness/Happiness monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
 
-
-for x in range(2012,2021):
+for x in range(2007,yearend):
+    print('Vuosi: ')
+    print(x)
     MeanEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Mean/England_MEAN.csv',x,x)
     meanarray=meanarray.append(MeanEngMonthly,ignore_index=True)
-    #Setplot(MeanEngMonthly)
-#ax1.plot(meanarray.iloc[:,0],meanarray.iloc[:,1] )
-#ax1.plot(MeanEngMonthly.iloc[:,0],MeanEngMonthly.iloc[:,1] )
 
-#Setplot(meanarray)
-for x in range(2012,2021):
-    MaxEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MaxTemp/EnglandMax.csv',x,x)
-    maxarray=maxarray.append(MaxEngMonthly,ignore_index=True)
-    #Setplot(MeanEngMonthly)
-#ax2.plot(maxarray.iloc[:,0],maxarray.iloc[:,1] )
-#Setplot(maxarray)
-
-
-for x in range(2012,2021):
     MinEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MinTemp/England_MIN.csv',x,x)
     minarray=minarray.append(MinEngMonthly,ignore_index=True)
-    #Setplot(MeanEngMonthly)
-#ax3.plot(minarray.iloc[:,0],minarray.iloc[:,1] )
-#ax2.plot(MinEngMonthly.iloc[:,0],MinEngMonthly.iloc[:,1] )
 
+    MaxEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MaxTemp/EnglandMax.csv',x,x)
+    maxarray=maxarray.append(MaxEngMonthly,ignore_index=True)
 
-for x in range(2012,2021):
     SunEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',x,x)
-    sunarray=sunarray.append(SunEngMonthly,ignore_index=True)
-#ax4.plot(sunarray.iloc[:,0],sunarray.iloc[:,1])
-#ax3.plot(SunEngMonthly.iloc[:,0],SunEngMonthly.iloc[:,1])
+    sunarray=sunarray.append(SunEngMonthly,ignore_index=True)   
 
-for x in range(2012,2021):
     RainEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Rain/England_RAIN.csv',x,x)
     rainarray=rainarray.append(RainEngMonthly,ignore_index=True)
-#ax4.plot(sunarray.iloc[:,0],sunarray.iloc[:,1])
-#ax3.plot(SunEngMonthly.iloc[:,0],SunEngMonthly.iloc[:,1])
 
-for x in range(2012,2021):
-   DepEngMonth=GetTrends('BY MONTH/Depression/Depression monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
-   deparray=deparray.append(DepEngMonth,ignore_index=True) 
-#ax5.plot(deparray.iloc[:,0],deparray.iloc[:,1])
-#ax4.plot(DepEngMonth.iloc[:,0],DepEngMonth.iloc[:,1])
+    DepEngMonth=GetTrends('BY MONTH/Depression_2006/Depression monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
+    deparray=deparray.append(DepEngMonth,ignore_index=True) 
+
+    ExeEngMonth=GetTrends('BY MONTH/Exercise_2006/Exercise monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
+    exearray=exearray.append(ExeEngMonth,ignore_index=True) 
+
+    HappyEngMonth=GetTrends('BY MONTH/Happy/Happy monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
+    happyarray=happyarray.append(HappyEngMonth,ignore_index=True) 
+    
+    HappinessEngMonth=GetTrends('BY MONTH/Happiness/Happiness monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
+    happinessarray=happinessarray.append(HappinessEngMonth,ignore_index=True) 
 
 
-for x in range(2012,2021):
-   ExeEngMonth=GetTrends('BY MONTH/Exercise/Exercise monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
-   exearray=exearray.append(ExeEngMonth,ignore_index=True) 
-#ax6.plot(exearray.iloc[:,0],exearray.iloc[:,1])
-#ax5.plot(ExeEngMonth.iloc[:,0],ExeEngMonth.iloc[:,1])
+
 
 
 
@@ -486,7 +477,9 @@ ax4.plot(sunarray.iloc[:,0],sunarray.iloc[:,1])
 ax5.plot(rainarray.iloc[:,0],rainarray.iloc[:,1])
 ax6.plot(deparray.iloc[:,0],deparray.iloc[:,1])
 ax7.plot(exearray.iloc[:,0],exearray.iloc[:,1])
-Setplot(meanarray)
+ax8.plot(happyarray.iloc[:,0],happyarray.iloc[:,1])
+ax9.plot(happinessarray.iloc[:,0],happinessarray.iloc[:,1])
+
 
 ax1.set_ylabel('Mean')
 ax2.set_ylabel('Max')
@@ -495,7 +488,9 @@ ax4.set_ylabel('Sun')
 ax5.set_ylabel('Rain')
 ax6.set_ylabel('Depression')
 ax7.set_ylabel('Exercise')
-SetMultiplePlots(meanarray,maxarray,minarray,sunarray,rainarray,deparray,exearray)
+ax8.set_ylabel('Happy')
+ax9.set_ylabel('Happiness')
+#SetMultiplePlots(meanarray,maxarray,minarray,sunarray,rainarray,deparray,exearray)
 # plt.legend() 
 plt.show()
 
