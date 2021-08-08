@@ -236,14 +236,14 @@ def GetTrends(filepath,yearstart,yearend):
 
     depression=pd.read_csv(filepath,parse_dates=[0])
 
-
+    print(depression)
     months=depression.iloc[yearstart:yearend,0]
     _Val=depression.iloc[yearstart:yearend,1]
     
-    print('yksikkötarkistus' +filepath)
-    print("Vuosi")
-    print(yearstart)
-    print(_Val)
+    #print('yksikkötarkistus' +filepath)
+    #print("Vuosi")
+    #print(yearstart)
+    #print(_Val)
     int_VALS=rank_INT(_Val,stochastic=False)
     _Val=int_VALS
    # print('int_VALS')
@@ -281,8 +281,8 @@ def GetTrends(filepath,yearstart,yearend):
 def GetWeather(filepath,yearstart,yearend):
     months=[]
     weather=pd.read_csv(filepath,sep=";",header=0)
-    #sunvalues=pd.read_csv('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',sep=";",header=0)
-    #print(sunvalues)
+    
+
     c=2006-yearstart
     if c<0:
         c=c*(-1)
@@ -375,7 +375,7 @@ def GetWeather(filepath,yearstart,yearend):
     else:
         print('YES')
         # print(summarum)
-    df_all['Sun']=ds_INT_Values
+    df_all['Weather']=ds_INT_Values
     return df_all
 #months=[]
 year=2006
@@ -424,75 +424,77 @@ yearend=2020
 # plt.legend() 
 # plt.show()
 
-fig, (ax1, ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9) = plt.subplots(9, 1,sharex=True, sharey=True)
-sunarray=SunEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',2006,2006)
-meanarray=MeanEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Mean/England_MEAN.csv',2006,2006)
+# fig, (ax1, ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9) = plt.subplots(9, 1,sharex=True, sharey=True)
+# sunarray=SunEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',2006,2006)
+# meanarray=MeanEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Mean/England_MEAN.csv',2006,2006)
 maxarray=MaxEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MaxTemp/EnglandMax.csv',2006,2006)
-minarray=MinEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MinTemp/England_MIN.csv',2006,2006)
-rainarray=RainEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Rain/England_RAIN.csv',2006,2006)
-deparray=DepEngMonth=GetTrends('BY MONTH/Depression_2006/Depression monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
-exearray=ExeEngMonth=GetTrends('BY MONTH/Exercise_2006/Exercise monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
-happyarray=HappyEngMonth=GetTrends('BY MONTH/Happy/Happy monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
-happinessarray=HappinessEngMonth=GetTrends('BY MONTH/Happiness/Happiness monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
+# minarray=MinEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MinTemp/England_MIN.csv',2006,2006)
+# rainarray=RainEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Rain/England_RAIN.csv',2006,2006)
+# deparray=DepEngMonth=GetTrends('BY MONTH/Depression_2006/Depression monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
+# exearray=ExeEngMonth=GetTrends('BY MONTH/Exercise_2006/Exercise monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
+# happyarray=HappyEngMonth=GetTrends('BY MONTH/Happy/Happy monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
+# happinessarray=HappinessEngMonth=GetTrends('BY MONTH/Happiness/Happiness monthlyGB-Eng.csv',daterows[str(2006)][0],daterows[str(2006)][1])
 
 for x in range(2007,yearend):
-    print('Vuosi: ')
-    print(x)
-    MeanEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Mean/England_MEAN.csv',x,x)
-    meanarray=meanarray.append(MeanEngMonthly,ignore_index=True)
+    # print('Vuosi: ')
+    # print(x)
+    # MeanEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Mean/England_MEAN.csv',x,x)
+    # meanarray=meanarray.append(MeanEngMonthly,ignore_index=True)
 
-    MinEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MinTemp/England_MIN.csv',x,x)
-    minarray=minarray.append(MinEngMonthly,ignore_index=True)
+    # MinEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MinTemp/England_MIN.csv',x,x)
+    # minarray=minarray.append(MinEngMonthly,ignore_index=True)
 
     MaxEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/MaxTemp/EnglandMax.csv',x,x)
     maxarray=maxarray.append(MaxEngMonthly,ignore_index=True)
 
-    SunEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',x,x)
-    sunarray=sunarray.append(SunEngMonthly,ignore_index=True)   
+    # SunEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Sun/England_SUN.csv',x,x)
+    # sunarray=sunarray.append(SunEngMonthly,ignore_index=True)   
 
-    RainEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Rain/England_RAIN.csv',x,x)
-    rainarray=rainarray.append(RainEngMonthly,ignore_index=True)
+    # RainEngMonthly=GetWeather('BY MONTH/CSV_files_with_dot/Rain/England_RAIN.csv',x,x)
+    # rainarray=rainarray.append(RainEngMonthly,ignore_index=True)
 
-    DepEngMonth=GetTrends('BY MONTH/Depression_2006/Depression monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
-    deparray=deparray.append(DepEngMonth,ignore_index=True) 
+    # DepEngMonth=GetTrends('BY MONTH/Depression_2006/Depression monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
+    # deparray=deparray.append(DepEngMonth,ignore_index=True) 
 
-    ExeEngMonth=GetTrends('BY MONTH/Exercise_2006/Exercise monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
-    exearray=exearray.append(ExeEngMonth,ignore_index=True) 
+    # ExeEngMonth=GetTrends('BY MONTH/Exercise_2006/Exercise monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
+    # exearray=exearray.append(ExeEngMonth,ignore_index=True) 
 
-    HappyEngMonth=GetTrends('BY MONTH/Happy/Happy monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
-    happyarray=happyarray.append(HappyEngMonth,ignore_index=True) 
+    # HappyEngMonth=GetTrends('BY MONTH/Happy/Happy monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
+    # happyarray=happyarray.append(HappyEngMonth,ignore_index=True) 
     
-    HappinessEngMonth=GetTrends('BY MONTH/Happiness/Happiness monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
-    happinessarray=happinessarray.append(HappinessEngMonth,ignore_index=True) 
+    # HappinessEngMonth=GetTrends('BY MONTH/Happiness/Happiness monthlyGB-Eng.csv',daterows[str(x)][0],daterows[str(x)][1])
+    # happinessarray=happinessarray.append(HappinessEngMonth,ignore_index=True) 
 
 
+compression_opts = dict(method='zip',
+                        archive_name='MaxTempEng.csv')  
+
+maxarray.to_csv('MaxTempEng.zip', index=False,
+          compression=compression_opts) 
+
+# ax1.plot(meanarray.iloc[:,0],meanarray.iloc[:,1] )
+# ax2.plot(maxarray.iloc[:,0],maxarray.iloc[:,1] )
+# ax3.plot(minarray.iloc[:,0],minarray.iloc[:,1] )
+# ax4.plot(sunarray.iloc[:,0],sunarray.iloc[:,1])
+# ax5.plot(rainarray.iloc[:,0],rainarray.iloc[:,1])
+# ax6.plot(deparray.iloc[:,0],deparray.iloc[:,1])
+# ax7.plot(exearray.iloc[:,0],exearray.iloc[:,1])
+# ax8.plot(happyarray.iloc[:,0],happyarray.iloc[:,1])
+# ax9.plot(happinessarray.iloc[:,0],happinessarray.iloc[:,1])
 
 
-
-
-ax1.plot(meanarray.iloc[:,0],meanarray.iloc[:,1] )
-ax2.plot(maxarray.iloc[:,0],maxarray.iloc[:,1] )
-ax3.plot(minarray.iloc[:,0],minarray.iloc[:,1] )
-ax4.plot(sunarray.iloc[:,0],sunarray.iloc[:,1])
-ax5.plot(rainarray.iloc[:,0],rainarray.iloc[:,1])
-ax6.plot(deparray.iloc[:,0],deparray.iloc[:,1])
-ax7.plot(exearray.iloc[:,0],exearray.iloc[:,1])
-ax8.plot(happyarray.iloc[:,0],happyarray.iloc[:,1])
-ax9.plot(happinessarray.iloc[:,0],happinessarray.iloc[:,1])
-
-
-ax1.set_ylabel('Mean')
-ax2.set_ylabel('Max')
-ax3.set_ylabel('Min')
-ax4.set_ylabel('Sun')
-ax5.set_ylabel('Rain')
-ax6.set_ylabel('Depression')
-ax7.set_ylabel('Exercise')
-ax8.set_ylabel('Happy')
-ax9.set_ylabel('Happiness')
-#SetMultiplePlots(meanarray,maxarray,minarray,sunarray,rainarray,deparray,exearray)
-# plt.legend() 
-plt.show()
+# ax1.set_ylabel('Mean')
+# ax2.set_ylabel('Max')
+# ax3.set_ylabel('Min')
+# ax4.set_ylabel('Sun')
+# ax5.set_ylabel('Rain')
+# ax6.set_ylabel('Depression')
+# ax7.set_ylabel('Exercise')
+# ax8.set_ylabel('Happy')
+# ax9.set_ylabel('Happiness')
+# # SetMultiplePlots(meanarray,maxarray,minarray,sunarray,rainarray,deparray,exearray)
+# # plt.legend() 
+# plt.show()
 
 
 
